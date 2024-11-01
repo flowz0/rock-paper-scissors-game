@@ -1,21 +1,16 @@
 function getRandomComputerResult() {
     const options = ["Rock", "Paper", "Scissors"];
-
-    return options[Math.floor(Math.random() * options.length)];
-}
-console.log(getRandomComputerResult());
+    const randomIndex = Math.floor(Math.random() * options.length);
+    return options[randomIndex];
+};
 
 function hasPlayerWonTheRound(player, computer) {
-    if (player === "Rock" && computer === "Scissors") {
-        return true;
-    } else if (player === "Scissors" && computer === "Paper") {
-        return true;
-    } else if (player === "Paper" && computer === "Rock") {
-        return true;
-    } else {
-        return false;
-    }
-}
+    return (
+        (player === "Rock" && computer === "Scissors") ||
+        (player === "Scissors" && computer === "Paper") ||
+        (player === "Paper" && computer === "Rock")
+    );
+};
 
 let playerScore = 0;
 let computerScore = 0;
@@ -23,26 +18,47 @@ let computerScore = 0;
 function getRoundResults(userOption) {
     const computerResult = getRandomComputerResult();
 
-    // if player wins
-    //  playerScore + 1
-    //  return player wins
-
-    // if computer and player choose same options
-    //  return tie
-
-    // if computer wins
-    //  computerScore + 1
-    //  return computer wins
-
-    if (hasPlayerWonTheRound()) {
+    if (hasPlayerWonTheRound(userOption, computerResult)) {
         playerScore++;
         return `Player wins! ${userOption} beats ${computerResult}`;
-    } else if (userOption === computerResult) {
+    } else if (computerResult === userOption) {
         return `It's a tie! Both chose ${userOption}`;
-    } else if (!hasPlayerWonTheRound()) {
+    } else {
         computerScore++;
         return `Computer wins! ${computerResult} beats ${userOption}`;
     }
+};
 
-}
+const playerScoreSpanElement = document.getElementById("player-score");
+const computerScoreSpanElement = document.getElementById("computer-score");
+const roundResultsMsg = document.getElementById("results-msg");
+const winnerMsgElement = document.getElementById("winner-msg");
+const optionsContainer = document.querySelector(".options-container");
+const resetGameBtn = document.getElementById("reset-game-btn");
 
+function showResults(userOption) {
+    roundResultsMsg.innerText = getRoundResults(userOption);
+    playerScoreSpanElement.innerText = playerScore;
+    computerScoreSpanElement.innerText = computerScore;
+    if (playerScore === 3 || computerScore === 3) {
+        winnerMsgElement.innerText = `
+            ${playerScore === 3 ? "Player" : "Computer"} has won the game!
+        `;
+        resetGameBtn.style.display = "block";
+        optionsContainer.style.display = "none";
+    }
+};
+
+function resetGame() {
+    winnerMsgElement.innerText = "";
+    roundResultsMsg.innerText = "";
+
+    playerScore = 0;
+    computerScore = 0;
+
+    playerScoreSpanElement.innerText = playerScore;
+    computerScoreSpanElement.innerText = computerScore;
+
+    resetGameBtn.style.display = "none";
+    optionsContainer.style.display = "block";
+};
