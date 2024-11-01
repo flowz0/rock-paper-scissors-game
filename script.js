@@ -17,3 +17,32 @@ function hasPlayerWonTheRound(player, computer) {
     }
 }
 
+let playerScore = 0;
+let computerScore = 0;
+
+function getRoundResults(userOption) {
+    const computerResult = getRandomComputerResult();
+
+    // if player wins
+    //  playerScore + 1
+    //  return player wins
+
+    // if computer and player choose same options
+    //  return tie
+
+    // if computer wins
+    //  computerScore + 1
+    //  return computer wins
+
+    if (hasPlayerWonTheRound()) {
+        playerScore++;
+        return `Player wins! ${userOption} beats ${computerResult}`;
+    } else if (userOption === computerResult) {
+        return `It's a tie! Both chose ${userOption}`;
+    } else if (!hasPlayerWonTheRound()) {
+        computerScore++;
+        return `Computer wins! ${computerResult} beats ${userOption}`;
+    }
+
+}
+
